@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-8">
+        <div class="card">
+            <div class="card-header bg-success">
+                <p>{{clientList | json}}</p>
+                Client List
+                Date is {{currentDate |date:'dd-MM-yy' }}
+                Fname Is:- {{fName()}}
+                
+                <button class="bg-danger" (click)="ChangeName()">Change F Name</button>
+            </div>
+            <app-alert [alertType]="'Error'" [message]="'Hello Brother Client'"></app-alert>
+            <ul *ngFor="let item of userList$ | async; track $index">
+                <li>{{item.username}}</li>
+            </ul>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-sm table-striped table-bordered">
+
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>User Name</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Phone</th>
+                                    <th>User Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of clientList; let sr=index">
+                                    <td>{{user.id }}</td>
+                                    <td>{{user.username | uppercase}}</td>
+                                    <td>{{user.firstName}}</td>
+                                    <td>{{user.lastName}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.password}}</td>
+                                    <td>{{user.phone}}</td>
+                                    <td>{{user.userStatus}}</td>
+                                    <td>
+                                        <input class="btn-dark" (click)="DeleteClient(user.username)" type="button"
+                                            value="Delete Client">
+                                        <input class="btn-dark" (click)="EditClient(user)" type="button" value="Edit">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header bg-success">
+                New Client
+            </div>
+            <div class="card-body">
+                <form #form="ngForm">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="">User Name</label>
+                            <input type="text" #uname="ngModel" name="username" required minlength="3"
+                                [(ngModel)]="clientObj.username" class="form-control" [disabled]="isDisabled">
+                        </div>
+                        <div *ngIf="uname.touched" class="text-danger">
+                            <small *ngIf="uname.errors?.['required']">Username is required.</small>
+                            <small *ngIf="uname.errors?.['minlength']">Min 3 characters required.</small>
+                        </div>
+                        <div class="col-6">
+                            <label for="">First Name</label>
+                            <input type="text" name="firstName" [(ngModel)]="clientObj.firstName" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Last Name</label>
+                            <input type="text" name="lastName" [(ngModel)]="clientObj.lastName" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Email</label>
+                            <input type="text" name="email" [(ngModel)]="clientObj.email" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Password</label>
+                            <input type="text" name="password" [(ngModel)]="clientObj.password" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="">Phone</label>
+                            <input type="text" name="phone" [(ngModel)]="clientObj.phone" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-6 text-center">
+                            <button class="btn btn-secondary" (click)="ResetClient()">Reset</button>
+                        </div>
+                        
+                        <div class="col-6 text-center">
+                            <app-my-button [btnClass]="'btn btn-success'" (onBtnClicked)="AddClient()" 
+                            [btnText]="clientObj.id!=0?'Update Client':'Save Client'">
+
+                            </app-my-button>
+                            <!-- <button [disabled]="!form.valid" class="btn btn-success" (click)="AddClient()">
+                                {{clientObj.id!=0?'Update Client':'Save Client'}}
+                            </button> -->
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
